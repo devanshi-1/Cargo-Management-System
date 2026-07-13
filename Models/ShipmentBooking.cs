@@ -33,5 +33,8 @@ namespace Cargo_Management_Project.Models
 
         // Navigation Property: One Booking can have multiple Containers
         public ICollection<Container> Containers { get; set; } = new List<Container>();
+
+        public CustomsDeclaration? CustomsDeclaration { get; set; }
+        public FreightInvoice? FreightInvoice { get; set; }
     }
 }
