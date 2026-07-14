@@ -20,6 +20,6 @@ namespace CargoManagementSystem.Models
         public ContainerStatus ContainerStatus { get; set; }
 
         // Navigation Property
-        public ICollection<CargoEvent> CargoEvents { get; set; }
+       public virtual ICollection<CargoEvent> CargoEvents { get; set; } = new List<CargoEvent>();
     }
 }
