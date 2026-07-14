@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Cargo_Management_Project.Models;
+﻿using Cargo_Management_Project.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cargo_Management_Project.Data
 {
@@ -10,5 +10,8 @@ namespace Cargo_Management_Project.Data
         }
         public DbSet<ShipmentBooking> ShipmentBookings { get; set; }
         public DbSet<Container> Containers { get; set; }
+
+        public DbSet<FreightInvoice> FreightInvoices { get; set; }
+
     }
 }
