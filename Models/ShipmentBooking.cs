@@ -1,11 +1,12 @@
-﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Cargo_Management_Project.Models
+namespace CargoManagementSystem.Models
 {
+    public enum BookingStatus { DRAFT, CONFIRMED, CANCELLED, COMPLETED }
+
     public class ShipmentBooking
-    {
-        [Key] // Defines bookingId as the Primary Key
+    {        
+        [Key]
         public int BookingId { get; set; }
 
         [Required]
@@ -29,9 +30,12 @@ namespace Cargo_Management_Project.Models
         public string DestinationPort { get; set; } = string.Empty;
 
         [Required]
-        public string BookingStatus { get; set; } = "DRAFT"; // DRAFT, CONFIRMED, CANCELLED, COMPLETED
-
-        // Navigation Property: One Booking can have multiple Containers
+        public BookingStatus BookingStatus { get; set; }
+      
+        // Navigation Properties for related records - initialized to prevent null-reference exceptions
         public ICollection<Container> Containers { get; set; } = new List<Container>();
+        public ICollection<CustomsDeclaration> CustomsDeclarations { get; set; } = new List<CustomsDeclaration>();
+        public ICollection<FreightInvoice> FreightInvoices { get; set; } = new List<FreightInvoice>();
+
     }
 }

@@ -1,28 +1,25 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Cargo_Management_Project.Models
+namespace CargoManagementSystem.Models
 {
+    public enum ContainerType { DRY, REEFER, FLAT_RACK, OPEN_TOP }
+    public enum ContainerStatus { EMPTY, LOADED, IN_TRANSIT, DISCHARGED }
     public class Container
     {
         [Key]
         public int ContainerId { get; set; }
-
-        [Required]
-        [StringLength(20)]
         public string ContainerNumber { get; set; }
+        public ContainerType ContainerType { get; set; }
 
-        [Required]
-        [StringLength(20)]
-        public string ContainerType { get; set; } // DRY, REEFER, FLAT_RACK, OPEN_TOP
-
+        [ForeignKey("ShipmentBooking")]
         public int BookingId { get; set; }
+        public ShipmentBooking ShipmentBooking { get; set; }
 
-        [StringLength(30)]
         public string SealNumber { get; set; }
+        public ContainerStatus ContainerStatus { get; set; }
 
-        [Required]
-        [StringLength(20)]
-        public string ContainerStatus { get; set; } // EMPTY, LOADED, IN_TRANSIT, DISCHARGED
+        // Navigation Property
+        public ICollection<CargoEvent> CargoEvents { get; set; }
     }
 }
