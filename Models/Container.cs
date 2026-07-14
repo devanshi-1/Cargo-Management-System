@@ -27,5 +27,7 @@ namespace Cargo_Management_Project.Models
 
         [ForeignKey("BookingId")]
         public ShipmentBooking? ShipmentBooking { get; set; }
+
+        public virtual ICollection<CargoEvent> CargoEvents { get; set; } = new List<CargoEvent>();
     }
 }
