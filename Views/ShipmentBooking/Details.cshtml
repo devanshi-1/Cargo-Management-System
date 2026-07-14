@@ -1,0 +1,148 @@
+﻿@model Cargo_Management_Project.Models.ShipmentBooking
+@{
+    ViewData["Title"] = "Shipment Details";
+    var role = ViewBag.Role as string;
+}
+
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <a href="@Url.Action("Index", "ShipmentBooking")" class="text-muted text-decoration-none">&larr; Back to Shipments</a>
+            <h2 class="mt-2 fw-bold">
+                Shipment Ref: <span class="text-primary">@Model.BookingNumber</span>
+                <span class="badge bg-warning text-dark ms-2">@Model.BookingStatus</span>
+            </h2>
+            <p class="text-muted">Route: <strong>@Model.OriginPort</strong> to <strong>@Model.DestinationPort</strong></p>
+        </div>
+
+        @if ((role == "Admin" || role == "Freight Forwarder") && Model.BookingStatus == "DRAFT")
+        {
+            <form href="@Url.Action("ConfirmBooking", "ShipmentBooking")" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.BookingId" />
+                <button type="submit" class="btn btn-success btn-lg shadow-sm">
+                    Confirm Booking & Generate B/L
+                </button>
+            </form>
+        }
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-lg-7 mb-4">
+            <div class="card shadow-sm border-0 p-4">
+                <h4 class="fw-bold mb-4">Shipment Overview</h4>
+                <form href="@Url.Action("Amend", "ShipmentBooking")" method="post">
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.BookingId)
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Shipper Name</label>
+                        @Html.TextBoxFor(m => m.ShipperName, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Consignee Name</label>
+                        @if (role == "Shipper" && Model.BookingStatus != "DRAFT")
+                        {
+                            @Html.TextBoxFor(m => m.ConsigneeName, new { @class = "form-control", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(m => m.ConsigneeName, new { @class = "form-control" })
+                        }
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Origin Port</label>
+                        @if (role == "Shipper" && Model.BookingStatus != "DRAFT")
+                        {
+                            @Html.TextBoxFor(m => m.OriginPort, new { @class = "form-control", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(m => m.OriginPort, new { @class = "form-control" })
+                        }
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Destination Port</label>
+                        @if (role == "Shipper" && Model.BookingStatus != "DRAFT")
+                        {
+                            @Html.TextBoxFor(m => m.DestinationPort, new { @class = "form-control", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(m => m.DestinationPort, new { @class = "form-control" })
+                        }
+                    </div>
+
+                    @if (Model.BookingStatus == "DRAFT" && (role == "Shipper" || role == "Admin" || role == "Freight Forwarder"))
+                    {
+                        <button type="submit" class="btn btn-primary w-100 mt-3 py-2 fw-bold">
+                            Update Details (Amend)
+                        </button>
+                    }
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card shadow-sm border-0 p-4 mb-4">
+                <h5 class="fw-bold">Containers & Stowage</h5>
+                @if (Model.BookingStatus == "DRAFT")
+                {
+                    <div class="text-center p-4 my-3 border rounded bg-light text-muted">
+                        <p class="mb-0 small">Equipment allocation is pending booking confirmation.</p>
+                    </div>
+                    <button class="btn btn-secondary w-100" disabled>Generate Vessel Manifest</button>
+                }
+                else
+                {
+                    <div class="p-3 my-3 bg-light rounded text-success">
+                        Ready for Container Assignment.
+                    </div>
+                    <a href="/Container/AssignContainer?bookingId=@Model.BookingId" class="btn btn-outline-primary w-100 fw-bold">
+                        Proceed to Container Loading
+                    </a>
+                }
+            </div>
+
+            <div class="card shadow-sm border-0 p-4 mb-4">
+                <h5 class="fw-bold">Customs & Regulatory Clearance</h5>
+                @if (Model.BookingStatus == "DRAFT")
+                {
+                    <p class="text-muted small">No customs declaration has been filed for this booking yet.</p>
+                    <button class="btn btn-secondary w-100" disabled>File Customs Declaration</button>
+                }
+                else
+                {
+                    <a href="/Customs/SubmitCustomsDeclaration?bookingId=@Model.BookingId" class="btn btn-outline-primary w-100 fw-bold">
+                        File Customs Declaration
+                    </a>
+                }
+            </div>
+
+            <div class="card shadow-sm border-0 p-4">
+                <h5 class="fw-bold">Freight Invoice & Settlements</h5>
+                @if (Model.BookingStatus == "DRAFT")
+                {
+                    <p class="text-muted small">No freight invoice has been generated for this booking.</p>
+                    <button class="btn btn-secondary w-100" disabled>Generate Freight Invoice</button>
+                }
+                else
+                {
+                    <a href="/FreightInvoice/GenerateFreightInvoice?bookingId=@Model.BookingId" class="btn btn-outline-primary w-100 fw-bold">
+                        Generate Freight Invoice
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
