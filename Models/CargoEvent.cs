@@ -1,23 +1,21 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization; 
 
-namespace Cargo_Management_Project.Models
+namespace CargoManagementSystem.Models
 {
+    public enum EventType { GATE_IN, LOADED, SAILED, DISCHARGED, GATE_OUT }
     public class CargoEvent
     {
         [Key]
         public int EventId { get; set; }
 
         [Required]
+        [ForeignKey("Container")]
         public int ContainerId { get; set; }
-
-        [ForeignKey("ContainerId")]
-        public virtual Container? Container { get; set; }
-
+        public Container Container { get; set; }
+      
         [Required]
-        public string EventType { get; set; } = "GATE_IN"; 
+        public EventType EventType { get; set; }
 
         [Required]
         [StringLength(100)]
