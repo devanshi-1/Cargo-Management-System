@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -80,8 +80,12 @@ namespace Cargo_Management_Project.Controllers
                 booking.ShipperName = associatedName ?? "Unknown Shipper";
             }
 
-            booking.BookingNumber = "BKG-" + DateTime.Now.ToString("yyMMdd") + "-" + new Random().Next(1000, 9999);
-            booking.BookingStatus = "DRAFT"; 
+            // FIX 1: Use Guid-based booking number generation instead of Random to prevent duplicates in concurrent scenarios
+            // Format: BKG-YYMMDD-[first 8 chars of GUID in uppercase]
+            booking.BookingNumber = GenerateUniqueBookingNumber();
+            
+            // FIX 3: Use BookingStatus enum instead of magic string "DRAFT" for type safety and consistency
+            booking.BookingStatus = BookingStatus.DRAFT;
 
             ModelState.Remove(nameof(booking.BookingNumber));
             ModelState.Remove(nameof(booking.BookingStatus));
@@ -105,9 +109,10 @@ namespace Cargo_Management_Project.Controllers
             var booking = await _context.ShipmentBookings.FindAsync(id);
             if (booking == null) return NotFound();
 
-            if (booking.BookingStatus == "DRAFT")
+            // FIX 3: Use BookingStatus enum instead of magic string "DRAFT" for type safety and consistency
+            if (booking.BookingStatus == BookingStatus.DRAFT)
             {
-                booking.BookingStatus = "CONFIRMED"; 
+                booking.BookingStatus = BookingStatus.CONFIRMED;
 
                 _context.Update(booking);
                 await _context.SaveChangesAsync();
@@ -129,7 +134,8 @@ namespace Cargo_Management_Project.Controllers
 
             if (role == "Shipper" && existing.ShipperName != associatedName) return Forbid();
 
-            if (role == "Shipper" && existing.BookingStatus != "DRAFT")
+            // FIX 3: Use BookingStatus enum instead of magic string "DRAFT" for type safety and consistency
+            if (role == "Shipper" && existing.BookingStatus != BookingStatus.DRAFT)
             {
                 TempData["ErrorMessage"] = "You can only amend shipments in DRAFT status.";
                 return RedirectToAction(nameof(Details), new { id = booking.BookingId });
@@ -155,6 +161,24 @@ namespace Cargo_Management_Project.Controllers
 
             TempData["ErrorMessage"] = "Invalid input data.";
             return RedirectToAction(nameof(Details), new { id = booking.BookingId });
+        }
+
+        /// <summary>
+        /// Generates a unique booking number using timestamp and GUID.
+        /// 
+        /// Why Guid instead of Random.Next()?
+        /// - Random is NOT thread-safe: Creating multiple Random instances in rapid succession can generate identical seeds,
+        ///   leading to duplicate numbers when multiple requests occur simultaneously.
+        /// - Guid.NewGuid() guarantees uniqueness across concurrent requests using the system's UUID generation.
+        /// 
+        /// Format: BKG-YYMMDD-[first 8 chars of GUID in uppercase]
+        /// Example: BKG-260714-A1B2C3D4
+        /// </summary>
+        private string GenerateUniqueBookingNumber()
+        {
+            var timestamp = DateTime.Now.ToString("yyMMdd");
+            var uniqueId = Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper();
+            return $"BKG-{timestamp}-{uniqueId}";
         }
     }
 }
