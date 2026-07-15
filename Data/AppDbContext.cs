@@ -1,8 +1,5 @@
 ﻿using Cargo_Management_Project.Models;
-<<<<<<< HEAD
-=======
-using CargoManagementSystem.Models;
->>>>>>> 550e0d1bfe23c637ed19a35e74cd66e93e8ab2e4
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Cargo_Management_Project.Data
@@ -14,14 +11,14 @@ namespace Cargo_Management_Project.Data
         }
         public DbSet<ShipmentBooking> ShipmentBookings { get; set; }
         public DbSet<Container> Containers { get; set; }
-<<<<<<< HEAD
+
 
         public DbSet<FreightInvoice> FreightInvoices { get; set; }
 
-=======
+
         public DbSet<CustomsDeclaration> CustomsDeclarations { get; set; }
         public DbSet<CargoEvent> CargoEvents { get; set; }
-        public DbSet<FreightInvoice> FreightInvoices { get; set; }
+       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -94,6 +91,6 @@ namespace Cargo_Management_Project.Data
                 }
             );
         }
->>>>>>> 550e0d1bfe23c637ed19a35e74cd66e93e8ab2e4
+
     }
 }

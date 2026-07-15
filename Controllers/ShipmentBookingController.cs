@@ -52,8 +52,8 @@ namespace Cargo_Management_Project.Controllers
         {
             var booking = await _context.ShipmentBookings
                 .Include(b => b.Containers)
-                .Include(b => b.CustomsDeclaration)
-                .Include(b => b.FreightInvoice)
+                .Include(b => b.CustomsDeclarations)
+                .Include(b => b.FreightInvoices)
                 .FirstOrDefaultAsync(m => m.BookingId == id);
 
             if (booking == null) return NotFound();
