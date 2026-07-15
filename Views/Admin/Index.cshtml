@@ -1,0 +1,193 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="row row-cols-1 row-cols-md-4 g-4 mb-4">
+    <div class="col">
+        <div class="card border-0 bg-primary text-white shadow-sm h-100">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="text-uppercase mb-1 small">Total Bookings</h6>
+                    <h2 class="mb-0 fw-bold">@ViewBag.TotalBookings</h2>
+                </div>
+                <i class="fa-solid fa-ship fa-2x opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card border-0 bg-success text-white shadow-sm h-100">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="text-uppercase mb-1 small">Total Revenue / Profit</h6>
+                    <h2 class="mb-0 fw-bold">$@ViewBag.TotalProfit.ToString("N0")</h2>
+                </div>
+                <i class="fa-solid fa-dollar-sign fa-2x opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card border-0 bg-warning text-dark shadow-sm h-100">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="text-uppercase mb-1 small">Active Containers</h6>
+                    <h2 class="mb-0 fw-bold">@ViewBag.ActiveContainers</h2>
+                </div>
+                <i class="fa-solid fa-boxes-stacked fa-2x opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card border-0 bg-info text-white shadow-sm h-100">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="text-uppercase mb-1 small">Customs Success Rate</h6>
+                    <h2 class="mb-0 fw-bold">@ViewBag.CustomsCleared</h2>
+                </div>
+                <i class="fa-solid fa-square-check fa-2x opacity-50"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title mb-3 fw-bold"><i class="fa-solid fa-chart-line text-primary me-2"></i>Invoice Settlement & Profit Trend</h5>
+                <canvas id="profitLineChart" height="120"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title mb-3 fw-bold"><i class="fa-solid fa-chart-pie text-success me-2"></i>Booking Share Status</h5>
+                <canvas id="bookingPieChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold"><i class="fa-solid fa-user-gear text-secondary me-2"></i>Partner & Internal Roles Management</h5>
+                <button class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                    <i class="fa-solid fa-user-plus me-1"></i> Add New Partner
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Partner Name</th>
+                                <th>Domain Identifier</th>
+                                <th>System Role / Scope</th>
+                                <th>Status</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Apex Forwarding Corp</strong></td>
+                                <td>apex-fwd@cargo.com</td>
+                                <td><span class="badge bg-primary">Freight Forwarder</span></td>
+                                <td><span class="badge bg-success">Active</span></td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-secondary me-1"><i class="fa-solid fa-pen"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Port Authority Terminal East</strong></td>
+                                <td>terminal-east@port.gov</td>
+                                <td><span class="badge bg-warning text-dark">Port Operator</span></td>
+                                <td><span class="badge bg-success">Active</span></td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-secondary me-1"><i class="fa-solid fa-pen"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Customs Broker Clearance Ltd</strong></td>
+                                <td>brokerage@customs.com</td>
+                                <td><span class="badge bg-info text-white">Customs Broker</span></td>
+                                <td><span class="badge bg-danger">Suspended</span></td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-secondary me-1"><i class="fa-solid fa-pen"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold">Assign New Authorized Partner</h5>
+                <button type="button" class="btn-close" data-bs-toggle="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="AddUserRole" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Partner Email</label>
+                        <input type="email" name="username" class="form-control" required placeholder="name@domain.com">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">System Role Scope</label>
+                        <select name="role" class="form-select">
+                            <option value="Forwarder">Freight Forwarder</option>
+                            <option value="PortOperator">Port Operator</option>
+                            <option value="CustomsBroker">Customs Broker</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Provision Role Access</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Line Chart Initialization
+        const ctxLine = document.getElementById('profitLineChart').getContext('2d');
+        new Chart(ctxLine, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(ViewBag.ProfitMonths)),
+                datasets: [{
+                    label: 'Net Profits ($)',
+                    data: @Html.Raw(Json.Serialize(ViewBag.ProfitValues)),
+                    borderColor: '#0d6efd',
+                    backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: { responsive: true }
+        });
+
+        // Pie Chart Initialization
+        const ctxPie = document.getElementById('bookingPieChart').getContext('2d');
+        new Chart(ctxPie, {
+            type: 'pie',
+            data: {
+                labels: @Html.Raw(Json.Serialize(ViewBag.BookingStatusLabels)),
+                datasets: [{
+                    data: @Html.Raw(Json.Serialize(ViewBag.BookingStatusCounts)),
+                    backgroundColor: ['#0dcaf0', '#ffc107', '#198754', '#dc3545']
+                }]
+            },
+            options: { responsive: true }
+        });
+    </script>
+}
