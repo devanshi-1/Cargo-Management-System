@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CargoManagementSystem.Models
+namespace Cargo_Management_Project.Models
+
 {
     public enum ContainerType { DRY, REEFER, FLAT_RACK, OPEN_TOP }
     public enum ContainerStatus { EMPTY, LOADED, IN_TRANSIT, DISCHARGED }

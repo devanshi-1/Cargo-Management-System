@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CargoManagementSystem.Models
+namespace Cargo_Management_Project.Models
 {
     public enum ClearanceStatus { FILED, UNDER_REVIEW, CLEARED, HELD, REJECTED }
     public class CustomsDeclaration

@@ -277,7 +277,7 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                            <span class="badge @(container.ContainerStatus == "LOADED" ? "bg-info" : container.ContainerStatus == "EMPTY" ? "bg-secondary" : "bg-success") text-uppercase">
+                                                            <span class="badge @(container.ContainerStatus == ContainerStatus.LOADED ? "bg-info" : container.ContainerStatus == ContainerStatus.EMPTY ? "bg-secondary" : "bg-success") text-uppercase">
                                                                 @container.ContainerStatus
                                                             </span>
                                                         </td>

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CargoManagementSystem.Models
+namespace Cargo_Management_Project.Models
 {
     public enum EventType { GATE_IN, LOADED, SAILED, DISCHARGED, GATE_OUT }
     public class CargoEvent
