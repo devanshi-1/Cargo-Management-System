@@ -1,5 +1,5 @@
-﻿using Cargo_Management_Project.Models;
 
+﻿using Cargo_Management_Project.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cargo_Management_Project.Data
@@ -9,7 +9,7 @@ namespace Cargo_Management_Project.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
-        public DbSet<ShipmentBooking> ShipmentBookings { get; set; }
+public DbSet<ShipmentBooking> ShipmentBookings { get; set; }
         public DbSet<Container> Containers { get; set; }
 
 

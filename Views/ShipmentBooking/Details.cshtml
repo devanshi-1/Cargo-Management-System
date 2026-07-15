@@ -15,7 +15,7 @@
             <p class="text-muted">Route: <strong>@Model.OriginPort</strong> to <strong>@Model.DestinationPort</strong></p>
         </div>
 
-        @if ((role == "Admin" || role == "Freight Forwarder") && Model.BookingStatus == BookingStatus.DRAFT)
+        @if ((role == "Admin" || role == "Freight Forwarder") && Model.BookingStatus == "DRAFT")
         {
             <form href="@Url.Action("ConfirmBooking", "ShipmentBooking")" method="post">
                 @Html.AntiForgeryToken()
@@ -49,7 +49,7 @@
 
                     <div class="mb-3">
                         <label class="form-label text-muted">Consignee Name</label>
-                        @if (role == "Shipper" && Model.BookingStatus != BookingStatus.DRAFT)
+                        @if (role == "Shipper" && Model.BookingStatus != "DRAFT")
                         {
                             @Html.TextBoxFor(m => m.ConsigneeName, new { @class = "form-control", @readonly = "readonly" })
                         }
@@ -61,7 +61,7 @@
 
                     <div class="mb-3">
                         <label class="form-label text-muted">Origin Port</label>
-                        @if (role == "Shipper" && Model.BookingStatus != BookingStatus.DRAFT)
+                        @if (role == "Shipper" && Model.BookingStatus != "DRAFT")
                         {
                             @Html.TextBoxFor(m => m.OriginPort, new { @class = "form-control", @readonly = "readonly" })
                         }
@@ -73,7 +73,7 @@
 
                     <div class="mb-3">
                         <label class="form-label text-muted">Destination Port</label>
-                        @if (role == "Shipper" && Model.BookingStatus != BookingStatus.DRAFT)
+                        @if (role == "Shipper" && Model.BookingStatus != "DRAFT")
                         {
                             @Html.TextBoxFor(m => m.DestinationPort, new { @class = "form-control", @readonly = "readonly" })
                         }
@@ -83,7 +83,7 @@
                         }
                     </div>
 
-                    @if (Model.BookingStatus == BookingStatus.DRAFT && (role == "Shipper" || role == "Admin" || role == "Freight Forwarder"))
+                    @if (Model.BookingStatus == "DRAFT" && (role == "Shipper" || role == "Admin" || role == "Freight Forwarder"))
                     {
                         <button type="submit" class="btn btn-primary w-100 mt-3 py-2 fw-bold">
                             Update Details (Amend)
@@ -96,7 +96,7 @@
         <div class="col-lg-5">
             <div class="card shadow-sm border-0 p-4 mb-4">
                 <h5 class="fw-bold">Containers & Stowage</h5>
-                @if (Model.BookingStatus == BookingStatus.DRAFT)
+                @if (Model.BookingStatus == "DRAFT")
                 {
                     <div class="text-center p-4 my-3 border rounded bg-light text-muted">
                         <p class="mb-0 small">Equipment allocation is pending booking confirmation.</p>
@@ -116,7 +116,7 @@
 
             <div class="card shadow-sm border-0 p-4 mb-4">
                 <h5 class="fw-bold">Customs & Regulatory Clearance</h5>
-            @if (Model.BookingStatus == BookingStatus.DRAFT)
+                @if (Model.BookingStatus == "DRAFT")
                 {
                     <p class="text-muted small">No customs declaration has been filed for this booking yet.</p>
                     <button class="btn btn-secondary w-100" disabled>File Customs Declaration</button>
@@ -131,7 +131,7 @@
 
             <div class="card shadow-sm border-0 p-4">
                 <h5 class="fw-bold">Freight Invoice & Settlements</h5>
-                @if (Model.BookingStatus == BookingStatus.DRAFT)
+                @if (Model.BookingStatus == "DRAFT")
                 {
                     <p class="text-muted small">No freight invoice has been generated for this booking.</p>
                     <button class="btn btn-secondary w-100" disabled>Generate Freight Invoice</button>

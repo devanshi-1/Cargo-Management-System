@@ -1,7 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Cargo_Management_Project.Models
+
 {
     public enum ContainerType { DRY, REEFER, FLAT_RACK, OPEN_TOP }
     public enum ContainerStatus { EMPTY, LOADED, IN_TRANSIT, DISCHARGED }
@@ -19,7 +20,9 @@ namespace Cargo_Management_Project.Models
         public string? SealNumber { get; set; }
         public ContainerStatus ContainerStatus { get; set; }
 
-        // Navigation Property
+       
+
         public ICollection<CargoEvent> CargoEvents { get; set; } = new List<CargoEvent>();
+
     }
 }

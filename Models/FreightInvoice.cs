@@ -13,7 +13,7 @@ namespace Cargo_Management_Project.Models
 
         public int BookingId { get; set; }
 
-        // Navigation property - single definition (avoid duplicates)
+  
         [ForeignKey("BookingId")]
         public virtual ShipmentBooking? ShipmentBooking { get; set; }
 
