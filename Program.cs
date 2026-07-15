@@ -11,11 +11,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-<<<<<<< HEAD
+
 builder.Services.AddScoped<IFreightInvoiceService, FreightInvoiceService>();
 
-=======
->>>>>>> 429bf755530f6eaaee3d1c5cbbf71adcdaad6a51
+
 var app = builder.Build();
 
 
