@@ -32,7 +32,7 @@ namespace Cargo_Management_Project.Models
         [Required]
         public BookingStatus BookingStatus { get; set; }
       
-        // Navigation Properties for related records - initialized to prevent null-reference exceptions
+        // Navigation Properties for related records
         public ICollection<Container> Containers { get; set; } = new List<Container>();
         public ICollection<CustomsDeclaration> CustomsDeclarations { get; set; } = new List<CustomsDeclaration>();
         public ICollection<FreightInvoice> FreightInvoices { get; set; } = new List<FreightInvoice>();
