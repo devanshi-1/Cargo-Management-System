@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Cargo_Management_Project.Data;
 using Cargo_Management_Project.Models;
 using Cargo_Management_Project.Services;
+using Cargo_Management_Project.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -43,8 +44,8 @@ namespace Cargo_Management_Project.Controllers
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
             var associatedName = User.FindFirst("AssociatedName")?.Value;
 
-            if (role == "Shipper" && booking.ShipperName != associatedName) return Forbid();
-            if (role == "Consignee" && booking.ConsigneeName != associatedName) return Forbid();
+            if (role == UserRoles.Shipper && booking.ShipperName != associatedName) return Forbid();
+            if (role == UserRoles.Consignee && booking.ConsigneeName != associatedName) return Forbid();
 
             ViewBag.Role = role;
             return View(booking);
@@ -93,10 +94,10 @@ namespace Cargo_Management_Project.Controllers
             // Security check before calling service update
             var existing = await _bookingService.GetBookingDetailsAsync(booking.BookingId);
             if (existing == null) return NotFound();
-            if (role == "Shipper" && existing.ShipperName != associatedName) return Forbid();
+            if (role == UserRoles.Shipper && existing.ShipperName != associatedName) return Forbid();
 
             ModelState.Remove(nameof(booking.BookingNumber));
-            if (role == "Shipper") ModelState.Remove(nameof(booking.BookingStatus));
+            if (role == UserRoles.Shipper) ModelState.Remove(nameof(booking.BookingStatus));
 
             if (ModelState.IsValid)
             {

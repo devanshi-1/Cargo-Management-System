@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Cargo_Management_Project.Data;
 using Cargo_Management_Project.Models;
+using Cargo_Management_Project.Helpers;
 
 namespace Cargo_Management_Project.Services
 {
@@ -23,11 +24,11 @@ namespace Cargo_Management_Project.Services
         {
             IQueryable<ShipmentBooking> query = _context.ShipmentBookings;
 
-            if (role == "Shipper")
+            if (role == UserRoles.Shipper)
             {
                 query = query.Where(b => b.ShipperName == associatedName);
             }
-            else if (role == "Consignee")
+            else if (role == UserRoles.Consignee)
             {
                 query = query.Where(b => b.ConsigneeName == associatedName);
             }
@@ -46,7 +47,7 @@ namespace Cargo_Management_Project.Services
 
         public async Task<bool> CreateBookingAsync(ShipmentBooking booking, string role, string associatedName)
         {
-            if (role == "Shipper")
+            if (role == UserRoles.Shipper)
             {
                 booking.ShipperName = associatedName ?? "Unknown Shipper";
             }
@@ -81,10 +82,10 @@ namespace Cargo_Management_Project.Services
             if (existing == null) return false;
 
             // Security validations inside service layer
-            if (role == "Shipper" && existing.BookingStatus != BookingStatus.DRAFT) return false;
+            if (role == UserRoles.Shipper && existing.BookingStatus != BookingStatus.DRAFT) return false;
 
             booking.BookingNumber = existing.BookingNumber;
-            if (role == "Shipper")
+            if (role == UserRoles.Shipper)
             {
                 booking.ShipperName = existing.ShipperName;
                 booking.BookingStatus = existing.BookingStatus;
