@@ -12,19 +12,18 @@ namespace Cargo_Management_Project.Models
         [Required]
         [ForeignKey("Container")]
         public int ContainerId { get; set; }
-        public Container Container { get; set; }
-      
-        [Required]
+        public Container? Container { get; set; }
+
         public EventType EventType { get; set; }
+        public DateTime EventTimestamp { get; set; }
+      
 
         [Required]
         [StringLength(100)]
         public string EventLocation { get; set; } = string.Empty;
 
-        [Required]
-        public DateTime EventTimestamp { get; set; } = DateTime.Now;
-
         [StringLength(255)]
         public string Remarks { get; set; } = string.Empty;
+
     }
 }

@@ -11,9 +11,10 @@ namespace Cargo_Management_Project.Models
 
         [ForeignKey("ShipmentBooking")]
         public int BookingId { get; set; }
-        public ShipmentBooking ShipmentBooking { get; set; }
 
-        public string HsCode { get; set; }
+        public ShipmentBooking? ShipmentBooking { get; set; }
+
+        public string? HsCode { get; set; }
 
         [Column(TypeName = "decimal(15,2)")]
         public decimal DeclaredValue { get; set; }

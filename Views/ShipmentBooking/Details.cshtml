@@ -1,4 +1,4 @@
-﻿@model Cargo_Management_Project.Models.ShipmentBooking
+@model Cargo_Management_Project.Models.ShipmentBooking
 @using Cargo_Management_Project.Models
 @{
     ViewData["Title"] = "Shipment Details";
@@ -50,7 +50,7 @@
 
                     <div class="mb-3">
                         <label class="form-label text-muted">Consignee Name</label>
-                    @if (role == "Shipper" && Model.BookingStatus != BookingStatus.DRAFT)
+                        @if (role == "Shipper" && Model.BookingStatus != BookingStatus.DRAFT)
                         {
                             @Html.TextBoxFor(m => m.ConsigneeName, new { @class = "form-control", @readonly = "readonly" })
                         }
@@ -62,7 +62,7 @@
 
                     <div class="mb-3">
                         <label class="form-label text-muted">Origin Port</label>
-                    @if (role == "Shipper" && Model.BookingStatus != BookingStatus.DRAFT)
+                        @if (role == "Shipper" && Model.BookingStatus != BookingStatus.DRAFT)
                         {
                             @Html.TextBoxFor(m => m.OriginPort, new { @class = "form-control", @readonly = "readonly" })
                         }
@@ -74,7 +74,7 @@
 
                     <div class="mb-3">
                         <label class="form-label text-muted">Destination Port</label>
-                    @if (role == "Shipper" && Model.BookingStatus != BookingStatus.DRAFT)
+                        @if (role == "Shipper" && Model.BookingStatus != BookingStatus.DRAFT)
                         {
                             @Html.TextBoxFor(m => m.DestinationPort, new { @class = "form-control", @readonly = "readonly" })
                         }
