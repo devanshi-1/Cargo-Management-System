@@ -7,7 +7,7 @@ using static Cargo_Management_Project.Services.IFreightInvoiceService;
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddScoped<IShipmentBookingService, ShipmentBookingService>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
