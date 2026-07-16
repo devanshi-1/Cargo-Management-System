@@ -10,17 +10,19 @@ namespace Cargo_Management_Project.Models
     {
         [Key]
         public int ContainerId { get; set; }
-        public string ContainerNumber { get; set; }
+        public string? ContainerNumber { get; set; }
         public ContainerType ContainerType { get; set; }
 
         [ForeignKey("ShipmentBooking")]
         public int BookingId { get; set; }
-        public ShipmentBooking ShipmentBooking { get; set; }
+        public ShipmentBooking? ShipmentBooking { get; set; }
 
-        public string SealNumber { get; set; }
+        public string? SealNumber { get; set; }
         public ContainerStatus ContainerStatus { get; set; }
 
-        // Navigation Property
-       public virtual ICollection<CargoEvent> CargoEvents { get; set; } = new List<CargoEvent>();
+       
+
+        public ICollection<CargoEvent> CargoEvents { get; set; } = new List<CargoEvent>();
+
     }
 }
