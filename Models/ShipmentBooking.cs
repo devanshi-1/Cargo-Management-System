@@ -1,11 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace CargoManagementSystem.Models
+namespace Cargo_Management_Project.Models
 {
     public enum BookingStatus { DRAFT, CONFIRMED, CANCELLED, COMPLETED }
 
     public class ShipmentBooking
-    {        
+    {
         [Key]
         public int BookingId { get; set; }
 

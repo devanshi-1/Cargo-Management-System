@@ -10,8 +10,8 @@ namespace Cargo_Management_Project.Services
             // Fallback mock dataset matching the blueprint design spec
             return new List<Container>
             {
-                new Container { ContainerId = 1, ContainerNumber = "CNTR-DRY-10001", ContainerType = "DRY", BookingId = 1001, SealNumber = "123", ContainerStatus = "LOADED" },
-                new Container { ContainerId = 2, ContainerNumber = "CNTR-FLA-10002", ContainerType = "FLAT_RACK", BookingId = 1002, SealNumber = "", ContainerStatus = "EMPTY" }
+                new Container { ContainerId = 1, ContainerNumber = "CNTR-DRY-10001", ContainerType = ContainerType.DRY, BookingId = 1001, SealNumber = "123", ContainerStatus = ContainerStatus.LOADED },
+                new Container { ContainerId = 2, ContainerNumber = "CNTR-FLA-10002", ContainerType = ContainerType.FLAT_RACK, BookingId = 1002, SealNumber = "", ContainerStatus = ContainerStatus.EMPTY }
             };
         }
 

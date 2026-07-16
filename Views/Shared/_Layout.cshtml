@@ -3,45 +3,143 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Cargo_Management_Project</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] - CargoClear Management</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Cargo_Management_Project.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Cargo_Management_Project</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - Cargo_Management_Project - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        var role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+        var associatedName = User.FindFirst("AssociatedName")?.Value;
+        var displayRole = role == "Admin" ? "System Administrator" : associatedName;
+
+        <div class="app-container">
+            <aside class="app-sidebar">
+                <div class="brand-title">
+                    <i class="fa-solid fa-ship brand-icon"></i>
+                    <div>
+                        <span>CargoTrack</span>
+                        <span style="font-size: 0.65rem; color: #94a3b8; font-weight: 500; display: block; margin-top: -0.25rem;">GLOBAL LOGISTICS</span>
+                    </div>
+                </div>
+
+                <nav class="nav-menu">
+                    <li>
+                        <a href="@Url.Action("Index", "Dashboard")" class="nav-link-custom @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" ? "active" : "")">
+                            <i class="fa-solid fa-chart-pie"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "ShipmentBooking")" class="nav-link-custom @(ViewContext.RouteData.Values["controller"]?.ToString() == "ShipmentBooking" && ViewContext.RouteData.Values["action"]?.ToString() != "VesselManifestsList" && ViewContext.RouteData.Values["action"]?.ToString() != "TerminalOps" ? "active" : "")">
+                            <i class="fa-solid fa-box-archive"></i>
+                            <span>Bookings & B/L</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("VesselManifestsList", "Container")" class="nav-link-custom @(ViewContext.RouteData.Values["action"]?.ToString() == "VesselManifestsList" ? "active" : "")">
+                            <i class="fa-solid fa-file-lines"></i>
+                            <span>Vessel Manifests</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Customs")" class="nav-link-custom @(ViewContext.RouteData.Values["controller"]?.ToString() == "Customs" ? "active" : "")">
+                            <i class="fa-solid fa-passport"></i>
+                            <span>Customs Declarations</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "FreightInvoice")" class="nav-link-custom @(ViewContext.RouteData.Values["controller"]?.ToString() == "FreightInvoice" ? "active" : "")">
+                            <i class="fa-solid fa-file-invoice-dollar"></i>
+                            <span>Invoices</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("TerminalOps", "Container")" class="nav-link-custom @(ViewContext.RouteData.Values["action"]?.ToString() == "TerminalOps" ? "active" : "")">
+                            <i class="fa-solid fa-boxes-stacked"></i>
+                            <span>Terminal Ops</span>
+                        </a>
+                    </li>
+                    <li style="border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 0.5rem; margin-top: 0.5rem;">
+                        <a href="@Url.Action("Settings", "Home")" class="nav-link-custom @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Settings" ? "active" : "")">
+                            <i class="fa-solid fa-gear"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </nav>
+
+                <div class="nav-user">
+                    <div class="user-badge">
+                        <div class="user-avatar">
+                            @(User.Identity.Name?.Substring(0, 2).ToUpper() ?? "US")
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name">@User.Identity.Name</span>
+                            <span class="user-role" title="@displayRole">@(role == "Admin" ? "Admin" : "Shipper")</span>
+                        </div>
+                    </div>
+
+                    <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+                        <button type="submit" class="btn-secondary-custom w-100 justify-content-center" style="background: rgba(255,255,255,0.05); color: #fff; border-color: rgba(255,255,255,0.1);">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span>Sign Out</span>
+                        </button>
+                    </form>
+                </div>
+            </aside>
+
+            <main class="app-main">
+                <!-- Sticky Topbar -->
+                <div class="app-topbar">
+                    <div class="breadcrumb-custom">
+                        CARGOTRACK / @(ViewContext.RouteData.Values["controller"]?.ToString()?.ToUpper()) / @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "OVERVIEW" : ViewContext.RouteData.Values["action"]?.ToString()?.ToUpper())
+                    </div>
+                    <div class="topbar-right">
+                        <button type="button" class="topbar-icon-btn">
+                            <i class="fa-solid fa-bell"></i>
+                            <span class="topbar-icon-badge"></span>
+                        </button>
+                        <div class="topbar-avatar-badge">
+                            <div class="topbar-avatar">
+                                @(User.Identity.Name?.Substring(0, 2).ToUpper() ?? "US")
+                            </div>
+                            <div class="topbar-user-info">
+                                <span class="topbar-username">@User.Identity.Name</span>
+                                <span class="topbar-role">@(role == "Admin" ? "System Administrator" : displayRole)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="app-content-body">
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-custom alert-success-custom">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>@TempData["SuccessMessage"]</span>
+                        </div>
+                    }
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-custom alert-danger-custom">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            <span>@TempData["ErrorMessage"]</span>
+                        </div>
+                    }
+
+                    @RenderBody()
+                </div>
+            </main>
         </div>
-    </footer>
+    }
+    else
+    {
+        @RenderBody()
+    }
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
