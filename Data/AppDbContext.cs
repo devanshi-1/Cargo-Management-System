@@ -9,7 +9,7 @@ namespace Cargo_Management_Project.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
-public DbSet<ShipmentBooking> ShipmentBookings { get; set; }
+        public DbSet<ShipmentBooking> ShipmentBookings { get; set; }
         public DbSet<Container> Containers { get; set; }
 
 
